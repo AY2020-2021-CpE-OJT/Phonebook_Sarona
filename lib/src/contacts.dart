@@ -1,0 +1,85 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'contacts_listing.dart';
+import 'package:phonebook/api/api.dart';
+import 'package:http/http.dart' as http;
+
+class contactInfo {
+  final String first_name, last_name;
+  // final List<String> phone_numbers;
+  contactInfo(this.first_name, this.last_name);
+}
+class contactsScreen extends StatefulWidget {
+  contactsScreen({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  contactsScreen_State createState() => contactsScreen_State();
+}
+
+class contactsScreen_State extends State<contactsScreen> {
+  contactAPI api = contactAPI();
+  List contacts = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  _loadData() {
+    setState(() {
+      api.getContacts().then((value) {
+        contacts = value;
+        loading = false;
+      });
+    });;
+  }
+
+  void _deleteContact(String id) {
+    contacts.removeWhere((contact) => contact['_id'] == id);
+    setState(() {
+      api.deleteContact(id).then((value) {
+        contacts = value;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        centerTitle: true,
+      ),
+      body: loading ? Center(child: CircularProgressIndicator()) :
+      contactsListing(contacts: contacts, toDelete: _deleteContact),
+    floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                _loadData();
+              });
+            },
+            heroTag: 'refreshbtn',
+            backgroundColor: Colors.pink[400],
+            tooltip: 'Refresh',
+            child: Icon(Icons.refresh),
+          ),
+          SizedBox(width: 5),
+          FloatingActionButton(
+            onPressed: () {Navigator.pushNamed(context, '/addnew');},
+            heroTag: 'addbtn',
+            tooltip: 'Add person',
+            child: Icon(Icons.person_add),
+          ),
+          SizedBox(height: 70)
+        ],
+      ),
+    );
+  }
+}
+
