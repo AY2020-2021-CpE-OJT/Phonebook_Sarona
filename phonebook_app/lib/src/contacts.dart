@@ -4,11 +4,13 @@ import 'contacts_listing.dart';
 import 'package:phonebook/api/api.dart';
 import 'package:http/http.dart' as http;
 
+
 class contactInfo {
   final String first_name, last_name;
   // final List<String> phone_numbers;
   contactInfo(this.first_name, this.last_name);
 }
+
 class contactsScreen extends StatefulWidget {
   contactsScreen({Key? key, required this.title}) : super(key: key);
   final String title;
