@@ -1,0 +1,22 @@
+{
+  "name": "final_phonebook",
+  "version": "1.0.0",
+  "description": "API for Phonebook",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AY2020-2021-CpE-OJT/Phonebook_Sarona.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AY2020-2021-CpE-OJT/Phonebook_Sarona/issues"
+  },
+  "homepage": "https://github.com/AY2020-2021-CpE-OJT/Phonebook_Sarona#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
