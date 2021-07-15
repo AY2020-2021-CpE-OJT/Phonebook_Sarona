@@ -17,7 +17,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-mongoose.connect('mongodb+srv://raulen:firstAPI@c001.nu8zm.mongodb.net/phonebook_data',
+mongoose.connect(process.env.DB_URI,
     {useNewUrlParser: true,useUnifiedTopology: true,/*useFindAndModify: false*/}, 
     () => console.log('connected to db')
 );
