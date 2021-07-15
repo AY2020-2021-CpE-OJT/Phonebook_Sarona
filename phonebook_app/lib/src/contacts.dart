@@ -27,23 +27,27 @@ class contactsScreen_State extends State<contactsScreen> {
   @override
   void initState() {
     super.initState();
-    _loadData();
-  }
-
-  _loadData() {
     setState(() {
-      api.getContacts().then((value) {
-        contacts = value;
+      loadData();
+    });
+  }
+  
+  loadData() {
+    api.getContacts().then((data) {
+      setState(() {
+        contacts = data;
         loading = false;
       });
-    });;
+    });
+    
   }
 
-  void _deleteContact(String id) {
-    contacts.removeWhere((contact) => contact['_id'] == id);
+  
+  deleteContact(String id) {
     setState(() {
+      contacts.removeWhere((contact) => contact['_id'] == id);
       api.deleteContact(id).then((value) {
-        contacts = value;
+        contacts.remove(value);
       });
     });
   }
@@ -56,14 +60,15 @@ class contactsScreen_State extends State<contactsScreen> {
         centerTitle: true,
       ),
       body: loading ? Center(child: CircularProgressIndicator()) :
-      contactsListing(contacts: contacts, toDelete: _deleteContact),
+      contactsListing(contacts: contacts, toDelete: deleteContact),
     floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
             onPressed: () {
               setState(() {
-                _loadData();
+                loadData();
+                loading = true;
               });
             },
             heroTag: 'refreshbtn',
