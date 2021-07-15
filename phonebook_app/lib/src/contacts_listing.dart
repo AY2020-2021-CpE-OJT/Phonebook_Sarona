@@ -30,7 +30,7 @@ class contactsListing extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    toDelete(contact['first_name']);
+                    toDelete(contact['_id']);
                   },
                   icon: Icon(Icons.delete),
                   splashRadius: 16,
