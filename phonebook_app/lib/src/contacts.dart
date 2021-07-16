@@ -42,7 +42,6 @@ class contactsScreen_State extends State<contactsScreen> {
     
   }
 
-  
   deleteContact(String id) {
     setState(() {
       contacts.removeWhere((contact) => contact['_id'] == id);

@@ -13,29 +13,28 @@ class contactsListing extends StatelessWidget {
     return contacts.isEmpty ? no_Contacts() : Container(
       padding: EdgeInsets.fromLTRB(8, 5, 8, 70),
       child: ListView(
-        children: contacts.map((contact) => Card(
-          child: new ListTile(
-            leading: CircleAvatar(
-              radius: 20,
-              child: Text('${contact['first_name'].substring(0,1).toUpperCase()}${contact['last_name'].substring(0,1).toUpperCase()}'),
-            ),
-            title: Text('${contact['first_name']} ${contact['last_name']}'),
-            subtitle: Text('${contact['phone_numbers'][1]}'),
-            trailing: Wrap(
-              children: [
-                IconButton(
-                  onPressed: () {Navigator.pushNamed(context, '/edit');}, 
-                  icon: Icon(Icons.edit),
-                  splashRadius: 16,
-                ),
-                IconButton(
-                  onPressed: () {
-                    toDelete(contact['_id']);
-                  },
-                  icon: Icon(Icons.delete),
-                  splashRadius: 16,
-                ),
-              ],
+        children: contacts.map((contact) => GestureDetector(
+          onTap: () => Navigator.pushNamed(context, '/view'),
+          child: Card(
+            child: new ListTile(
+              leading: CircleAvatar(
+                radius: 20,
+                child: Text('${contact['first_name'].substring(0,1).toUpperCase()}${contact['last_name'].substring(0,1).toUpperCase()}'),
+              ),
+              title: Text('${contact['first_name']} ${contact['last_name']}'),
+              subtitle: Text('${contact['phone_numbers'][1]}'),
+              trailing: Wrap(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      toDelete(contact['_id']);
+                    },
+                    icon: Icon(Icons.delete),
+                    splashRadius: 16,
+                    color: Colors.red[500],
+                  ),
+                ],
+              ),
             ),
           ),
         )).toList()
