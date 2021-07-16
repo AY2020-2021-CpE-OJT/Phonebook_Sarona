@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const User_Infos = require('./schema');
 require("dotenv/config");
 const app = express();
-// app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //GET ALL
@@ -65,7 +65,7 @@ app.put('/:id', function(req, res, next){
 });
 
 mongoose.connect(process.env.DB_URI,
-    {useNewUrlParser: true,useUnifiedTopology: true,/*useFindAndModify: false*/}, 
+    {useNewUrlParser: true,useUnifiedTopology: true,useFindAndModify: false}, 
     () => console.log('connected to db')
 );
 
