@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonebook/routes/view_contact.dart';
 import 'no_contacts.dart';
 
 class contactsListing extends StatelessWidget {
@@ -14,7 +15,12 @@ class contactsListing extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(8, 5, 8, 70),
       child: ListView(
         children: contacts.map((contact) => GestureDetector(
-          onTap: () => Navigator.pushNamed(context, '/view'),
+          onTap: () => 
+          Navigator.push(context, 
+            MaterialPageRoute(
+              builder: (context) => viewContact(contact: contact)
+            )
+          ),
           child: Card(
             child: new ListTile(
               leading: CircleAvatar(

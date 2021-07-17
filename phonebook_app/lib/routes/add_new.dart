@@ -8,6 +8,7 @@ class addNew extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add new Contacts'),
+        centerTitle: true,
       ),
     );
   }
