@@ -6,32 +6,40 @@ class viewContact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String avatarLetter = '${contact['first_name'].substring(0,1).toUpperCase()}${contact['last_name'].substring(0,1).toUpperCase()}';
+    var avatarLetter = '${contact['first_name'].substring(0,1).toUpperCase()}${contact['last_name'].substring(0,1).toUpperCase()}';
+    var fullName = '${contact['first_name']} ${contact['last_name']}';
     return Scaffold(
       appBar: AppBar(
         title: Text('Viewing Contact'),
         centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.edit),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Center(
-              child: CircleAvatar(
-                child: Text(avatarLetter,
-                  style: TextStyle(
-                    fontSize: 27,
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: CircleAvatar(
+                  child: Text(avatarLetter,
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
                   ),
+                  radius: 42,
                 ),
-                radius: 35,
               ),
             ),
             Divider(height: 20, color: Colors.blueGrey[900],),
-            Text('FIRST NAME'),
+            Text('NAME'),
             SizedBox(height: 5,),
             Text(
-              '${contact['first_name']}',
+              fullName,
               style: TextStyle(
                 color: Colors.blue[900],
                 fontSize: 28,
@@ -39,19 +47,7 @@ class viewContact extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20,),
-            Text('LAST NAME'),
-            SizedBox(height: 5,),
-            Text(
-              '${contact['last_name']}',
-              style: TextStyle(
-                color: Colors.blue[900],
-                fontSize: 28,
-                letterSpacing: 1.5,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 35,),
+            SizedBox(height: 45,),
             Text(
               'PHONE NUMBER(S)'
             ),
@@ -60,12 +56,23 @@ class viewContact extends StatelessWidget {
               child: ListView.builder( 
                 itemCount: contact['phone_numbers'].length,
                 itemBuilder: (BuildContext context, int index){
-                  return Text(
-                    contact['phone_numbers'][index],
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.phone_android_sharp,
+                          color: Colors.blue[900],
+                        ),
+                        SizedBox(width: 10,),
+                        Text(
+                            contact['phone_numbers'][index],
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },
