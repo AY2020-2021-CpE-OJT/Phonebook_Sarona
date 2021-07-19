@@ -28,13 +28,46 @@ class contactsListing extends StatelessWidget {
                 child: Text('${contact['first_name'].substring(0,1).toUpperCase()}${contact['last_name'].substring(0,1).toUpperCase()}'),
               ),
               title: Text('${contact['first_name']} ${contact['last_name']}'),
-              subtitle: Text('${contact['phone_numbers'][1]}'),
+              subtitle: contact['phone_numbers'].isEmpty ? Text('No Number') : Text('${contact['phone_numbers'][1]}'),
               trailing: Wrap(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      toDelete(contact['_id']);
-                    },
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25))),
+                          title: new Text('Are you sure?', textAlign: TextAlign.center),
+                          content: Text('This will delete the whole contact', textAlign: TextAlign.center),
+                          actions: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                TextButton(
+                                    onPressed: () {
+                                      toDelete(contact['_id']);
+                                      Navigator.of(context).pop();
+                                    },    //Deletes the data
+                                    child: Text('Yes',
+                                      style: TextStyle(color: Colors.red,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {Navigator.of(context).pop();},
+                                  child: Text('Cancel',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        );
+                      }
+                    ),
                     icon: Icon(Icons.delete),
                     splashRadius: 16,
                     color: Colors.red[500],
