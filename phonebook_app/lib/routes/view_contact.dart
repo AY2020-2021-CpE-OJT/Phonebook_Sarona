@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonebook/routes/edit_contact.dart';
 
 class viewContact extends StatelessWidget {
   final Map contact;
@@ -14,7 +15,9 @@ class viewContact extends StatelessWidget {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {Navigator.push(context, 
+        MaterialPageRoute(builder: (context) => editContact(contact: contact)));
+        },
         child: Icon(Icons.edit),
       ),
       body: Padding(
