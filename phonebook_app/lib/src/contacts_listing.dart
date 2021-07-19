@@ -48,7 +48,7 @@ class contactsListing extends StatelessWidget {
                                       toDelete(contact['_id']);
                                       Navigator.of(context).pop();
                                     },    //Deletes the data
-                                    child: Text('Yes',
+                                    child: Text('Confirm',
                                       style: TextStyle(color: Colors.red,
                                       fontSize: 18,
                                     ),
