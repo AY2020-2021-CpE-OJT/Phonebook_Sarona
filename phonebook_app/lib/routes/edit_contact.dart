@@ -60,6 +60,7 @@ class editContact extends StatelessWidget {
                     return TextField(
                       controller: _phoneNumbers[index],
                       decoration: InputDecoration(labelText: 'Phone Number #${index+1}'),
+                      keyboardType: TextInputType.number,
                     );
                   },
                 ),
@@ -77,7 +78,11 @@ class editContact extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {}, 
-                    child: Text('Save Changes'),
+                    child: Text('Save Changes',
+                      style: TextStyle(
+                        color: Colors.green,
+                      ),
+                    ),
                   )
                 ],
               ),
