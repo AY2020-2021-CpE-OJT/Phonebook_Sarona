@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonebook/routes/add_new.dart';
 
 class no_Contacts extends StatelessWidget {
   const no_Contacts({ Key? key }) : super(key: key);
@@ -17,7 +18,11 @@ class no_Contacts extends StatelessWidget {
             ),
             SizedBox(height: 4),
             TextButton(
-              onPressed: () {Navigator.pushNamed(context, '/addnew');}, 
+              onPressed: () {
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => addNew())
+                );
+              },
               child: Text(
                 'Add contacts',
                 style: TextStyle(

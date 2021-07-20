@@ -28,7 +28,7 @@ class contactsListing extends StatelessWidget {
                 child: Text('${contact['first_name'].substring(0,1).toUpperCase()}${contact['last_name'].substring(0,1).toUpperCase()}'),
               ),
               title: Text('${contact['first_name']} ${contact['last_name']}'),
-              subtitle: contact['phone_numbers']?.isEmpty ? Text('No Number') : Text('${contact['phone_numbers'][0]}'),
+              subtitle: contact['phone_numbers']?.isEmpty ? Text('') : Text('${contact['phone_numbers'][0]}'),
               trailing: Wrap(
                 children: [
                   IconButton(

@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:phonebook/routes/add_new.dart';
 import 'contacts_listing.dart';
 import 'package:phonebook/api/api.dart';
@@ -33,7 +31,6 @@ class contactsScreen_State extends State<contactsScreen> {
         loading = false;
       });
     });
-    
   }
 
   deleteContact(String id) {
@@ -54,7 +51,7 @@ class contactsScreen_State extends State<contactsScreen> {
       ),
       body: loading ? Center(child: CircularProgressIndicator()) :
       contactsListing(contacts: contacts, toDelete: deleteContact),
-    floatingActionButton: Row(
+      floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
