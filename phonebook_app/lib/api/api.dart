@@ -16,7 +16,7 @@ class contactAPI {
     }
   }
 
-  Future<String> deleteContact(String id) async {
+  Future<Null> deleteContact(String id) async {
     final Map data;
     http.Response response = await http.delete(Uri.parse('$uri$id'),
       headers: _header
@@ -29,19 +29,37 @@ class contactAPI {
     }
   }
 
-  Future<List> updateContact() async {
+  Future<Map> createContact() async {
     final Map data;
     http.Response response = await http.post(Uri.parse(uri),
-      headers: _header
+      headers: _header,
+      
     );
+
     data = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      return await data['fetchedInfo'];
+    if (response.statusCode == 201) {
+      return data['fetchedInfo'];
     } else {
-      throw await Exception('Failed to update data');
+      throw await Exception('Failed to add data');
     }
   }
 }
+
+// class contactInsert {
+//   String first_name;
+//   String last_name;
+//   // List<String> phone_numbers;
+
+//   contactInsert({required this.first_name, required this.last_name,});
+
+//   Map<String, dynamic> toJson() {
+    
+//     return {
+//       "first_name": first_name,
+//       "last_name": last_name,
+//     };
+//   }
+// }
 
 
 
