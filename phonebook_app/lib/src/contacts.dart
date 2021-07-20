@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:phonebook/routes/add_new.dart';
 import 'contacts_listing.dart';
 import 'package:phonebook/api/api.dart';
 
@@ -70,7 +71,11 @@ class contactsScreen_State extends State<contactsScreen> {
           ),
           SizedBox(width: 5),
           FloatingActionButton(
-            onPressed: () {Navigator.pushNamed(context, '/addnew');},
+            onPressed: () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => addNew())
+              );
+            },
             heroTag: 'addbtn',
             tooltip: 'Add person',
             child: Icon(Icons.person_add),

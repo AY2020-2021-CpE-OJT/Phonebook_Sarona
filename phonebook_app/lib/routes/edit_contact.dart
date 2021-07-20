@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phonebook/api/api.dart';
 
 class editContact extends StatelessWidget {
-  // const editContact({ Key? key }) : super(key: key);
   final Map contact;
-  editContact({required this.contact});
-  
+  const editContact({ Key? key, required this.contact }) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -21,6 +19,7 @@ class editContact extends StatelessWidget {
     for (var i = 0; i < contact['phone_numbers'].length; i++) {
       _phoneNumbers[i].text = contact['phone_numbers'][i];
     }
+    /*===================================================================================================*/
     return Scaffold(
       appBar: AppBar(
         title: Text('Editing Contact'),
@@ -34,13 +33,15 @@ class editContact extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: Icon(Icons.edit,
-                  color: Colors.blue[600],
-                  size: 50,
+                child: CircleAvatar(
+                  radius: 42,
+                  child: Icon(Icons.edit,
+                    size: 45,
+                  ),
                 ),
               ),
               Divider(height: 20, color: Colors.blueGrey[900],),
-              SizedBox(height: 20,),
+              SizedBox(height: 10),
               TextField(
                 controller: _firstname,
                 decoration: InputDecoration(labelText: 'First Name'),
@@ -49,7 +50,7 @@ class editContact extends StatelessWidget {
                 controller: _lastname,
                 decoration: InputDecoration(labelText: 'Last Name'),
               ),
-              SizedBox(height: 35,),
+              SizedBox(height: 25,),
               Container(
                 height: 235,
                 child: ListView.builder(
@@ -64,8 +65,16 @@ class editContact extends StatelessWidget {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  TextButton(
+                    onPressed: () {}, 
+                    child: Text('Clear All',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
                   TextButton(
                     onPressed: () {}, 
                     child: Text('Save Changes'),
