@@ -40,7 +40,7 @@ class contactAPI {
     );
 
     if (response.statusCode == 201) {
-      return contactInfo.fromJson(jsonDecode(response.body));
+      return await contactInfo.fromJson(jsonDecode(response.body));
     } else {
       throw await Exception('Failed to add data');
     }
