@@ -57,9 +57,9 @@ class contactsScreen_State extends State<contactsScreen> {
           FloatingActionButton(
             onPressed: () {
               setState(() {
-                loadData();
                 loading = true;
               });
+              loadData();
             },
             heroTag: 'refreshbtn',
             backgroundColor: Colors.pink[400],
@@ -71,7 +71,12 @@ class contactsScreen_State extends State<contactsScreen> {
             onPressed: () {
               Navigator.push(context,
                 MaterialPageRoute(builder: (context) => addNew())
-              );
+              ).then((value) {
+                setState(() {
+                  loading = true;
+                });
+                loadData();
+              });
             },
             heroTag: 'addbtn',
             tooltip: 'Add person',
