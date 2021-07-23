@@ -22,10 +22,21 @@ class _addNewState extends State<addNew> {
       pnIndex++;
     });
   }
+
+  clearDynamic() {
+    
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController _firstname = TextEditingController();
     final TextEditingController _lastname = TextEditingController();
+
+    clearTextInput() {
+      _firstname.clear();
+      _lastname.clear();
+    }
     
     return Scaffold(
       appBar: AppBar(
@@ -86,7 +97,7 @@ class _addNewState extends State<addNew> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 TextButton(
-                  onPressed: () {}, 
+                  onPressed: clearDynamic, 
                   child: Text('Clear All',
                     style: TextStyle(
                       color: Colors.red,
@@ -98,8 +109,10 @@ class _addNewState extends State<addNew> {
                   child: Text('+ Add Number'),
                 ),
                 TextButton(
-                  onPressed: () async {
-
+                  onPressed: () {
+                    api.createContact(_firstname.text, _lastname.text);
+                    clearTextInput();
+                    Navigator.pop(context);
                   }, 
                   child: Text('Add Contact',
                     style: TextStyle(

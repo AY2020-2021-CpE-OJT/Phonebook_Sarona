@@ -29,37 +29,45 @@ class contactAPI {
     }
   }
 
-  Future<Map> createContact() async {
-    final Map data;
+  Future<contactInfo> createContact(String fsName, lsName) async {
+    // final Map data;
     http.Response response = await http.post(Uri.parse(uri),
       headers: _header,
-      
+      body: jsonEncode(<String, String> {
+        'first_name': fsName,
+        'last_name': lsName
+      })
     );
 
-    data = jsonDecode(response.body);
     if (response.statusCode == 201) {
-      return data['fetchedInfo'];
+      return contactInfo.fromJson(jsonDecode(response.body));
     } else {
       throw await Exception('Failed to add data');
     }
   }
 }
 
-// class contactInsert {
-//   String first_name;
-//   String last_name;
-//   // List<String> phone_numbers;
+class contactInfo {
+  String fsName;
+  String lsName;
+  // List<String> phNumbers;
 
-//   contactInsert({required this.first_name, required this.last_name,});
+  contactInfo({
+    required this.fsName,
+    required this.lsName,
+    // required this.phNumbers
+  });
 
-//   Map<String, dynamic> toJson() {
-    
-//     return {
-//       "first_name": first_name,
-//       "last_name": last_name,
-//     };
-//   }
-// }
+  factory contactInfo.fromJson(Map<String, dynamic> json) {
+    return contactInfo(
+      fsName: json['first_name'],
+      lsName: json['last_name'],
+      // phNumbers: json['phone_numbers'],
+    );
+  }
+}
+
+
 
 
 
