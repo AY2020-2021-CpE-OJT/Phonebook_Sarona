@@ -38,8 +38,9 @@ class contactAPI {
         'last_name': lsName
       })
     );
+    print(response.statusCode);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return await contactInfo.fromJson(jsonDecode(response.body));
     } else {
       throw await Exception('Failed to add data');
