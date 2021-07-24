@@ -19,16 +19,16 @@ class contactsScreen_State extends State<contactsScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      loadData();
-    });
+    loadData();
   }
   
   loadData() {
     api.getContacts().then((data) {
       setState(() {
         contacts = data;
-        loading = false;
+        if (contacts.isNotEmpty) {
+          loading = false;
+        }
       });
     });
   }
@@ -42,6 +42,14 @@ class contactsScreen_State extends State<contactsScreen> {
     });
   }
 
+  showData() {
+    if (loading == true) {
+      return Center(child: CircularProgressIndicator());
+    } else if (loading == false) {
+      return contactsListing(contacts: contacts, toDelete: deleteContact);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +57,9 @@ class contactsScreen_State extends State<contactsScreen> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: loading ? Center(child: CircularProgressIndicator()) :
-      contactsListing(contacts: contacts, toDelete: deleteContact),
+      body: showData(),
+      // loading ? Center(child: CircularProgressIndicator()) :
+      // contactsListing(contacts: contacts, toDelete: deleteContact),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
