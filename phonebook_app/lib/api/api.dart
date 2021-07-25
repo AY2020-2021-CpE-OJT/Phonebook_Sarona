@@ -43,6 +43,21 @@ class contactAPI {
       throw await Exception('Failed to add data');
     }
   }
+
+  Future<contactInfo> updateContact(contactInfo item, String id) async {
+
+    http.Response response = await http.put(Uri.parse('$uri$id'),
+      headers: _header,
+      body: jsonEncode(item.toJson()),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return await contactInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw await Exception('Failed to save data');
+    }
+  }
 }
 
 class contactInfo {
