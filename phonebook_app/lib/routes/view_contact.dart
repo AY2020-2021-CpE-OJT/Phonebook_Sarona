@@ -34,7 +34,7 @@ class viewContact extends StatelessWidget {
                       fontSize: 30,
                     ),
                   ),
-                  radius: 42,
+                  radius: 40,
                 ),
               ),
             ),
@@ -60,21 +60,22 @@ class viewContact extends StatelessWidget {
                 itemCount: contact['phone_numbers'].length,
                 itemBuilder: (BuildContext context, int index){
                   return Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 14, 0, 0),
                     child: Row(
-                      children: [
-                        Icon(Icons.phone_android_sharp,
-                          color: Colors.blue[900],
-                        ),
-                        SizedBox(width: 10,),
-                        Text(
-                            contact['phone_numbers'][index],
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
+                      children: <Widget>[
+                        if (contact['phone_numbers'][index] != '') 
+                          Icon(Icons.call,
+                            color: Colors.blue[900],
                           ),
-                        ),
+                          SizedBox(width: 14,),
+                          Text(
+                              contact['phone_numbers'][index],
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                            ),
+                          ),
                       ],
                     ),
                   );
