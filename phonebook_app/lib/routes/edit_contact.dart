@@ -25,7 +25,7 @@ class _editContactState extends State<editContact> {
   }
 
   addedSnackBar() {
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added Contact..')));
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved new changes')));
   }
 
   addNumber () {
@@ -69,11 +69,9 @@ class _editContactState extends State<editContact> {
         title: Text('Editing Contact'),
         centerTitle: true,
       ),
-      // resizeToAvoidBottomInset: false,
       body: Form(
         key: _formKey,
         child: ListView(
-          // physics: NeverScrollableScrollPhysics(),
           children: [
               SingleChildScrollView(
                 child: Padding(
@@ -272,12 +270,12 @@ class _editContactState extends State<editContact> {
                               addedSnackBar();
                               
                               final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
-                              api.createContact(data);
+                              api.updateContact(data, widget.contact['_id']);
                               clearTextFields();
                               Navigator.pop(context);
                             }
                           }, 
-                          child: Text('Add Contact',
+                          child: Text('Save Changes',
                             style: TextStyle(
                                 color: Colors.green,
                             ),
