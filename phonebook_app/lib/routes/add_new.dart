@@ -32,7 +32,7 @@ class _addNewState extends State<addNew> {
       });
   }
 
-  clearTextInput() {
+  clearTextFields() {
       _firstname.clear();
       _lastname.clear();
       for (var i = 0; i < _phoneNumbers.length; i++) {
@@ -229,7 +229,7 @@ class _addNewState extends State<addNew> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         TextButton(
-                          onPressed: clearTextInput, 
+                          onPressed: clearTextFields, 
                           child: Text('Clear All',
                             style: TextStyle(
                               color: Colors.red,
@@ -253,7 +253,7 @@ class _addNewState extends State<addNew> {
                               
                               final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
                               api.createContact(data);
-                              clearTextInput();
+                              clearTextFields();
                               Navigator.pop(context);
                             }
                           }, 
@@ -267,8 +267,8 @@ class _addNewState extends State<addNew> {
                     ),
                   ],
                 ),
-                          ),
               ),
+            ),
           ],
         ),
       ),
