@@ -1,25 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:phonebook/api/api.dart';
 
-class editContact extends StatelessWidget {
+class editContact extends StatefulWidget {
   final Map contact;
   const editContact({ Key? key, required this.contact }) : super(key: key);
 
-  
-  
+  @override
+  _editContactState createState() => _editContactState();
+}
+
+class _editContactState extends State<editContact> {
+  final _formKey = GlobalKey<FormState>();
+  contactAPI api = contactAPI();
+  int pnIndex = 2;
+
+  @override
+  void initState() {
+    super.initState();
+    for (var i = 0; i < pnIndex; i++) {
+      if (widget.contact['phone_numbers'][i] == '') {
+        pnIndex--;
+      }
+    }
+  }
+
+  addedSnackBar() {
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added Contact..')));
+  }
+
+  addNumber () {
+      if (pnIndex >= 3) {
+        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cannot add more Phone Numbers')));
+      }
+      setState(() {
+        pnIndex++;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController _firstname = TextEditingController();
     final TextEditingController _lastname = TextEditingController();
     final List<TextEditingController> _phoneNumbers = [
-      for (var i = 0; i < contact['phone_numbers'].length; i++) 
+      for (var i = 0; i < widget.contact['phone_numbers'].length; i++) 
         TextEditingController()
     ];
     /*===================================================================================================*/
-    _firstname.text = contact['first_name'];
-    _lastname.text = contact['last_name'];
-    for (var i = 0; i < contact['phone_numbers'].length; i++) {
-      _phoneNumbers[i].text = contact['phone_numbers'][i];
+    _firstname.text = widget.contact['first_name'];
+    _lastname.text = widget.contact['last_name'];
+    for (var i = 0; i < widget.contact['phone_numbers'].length; i++) {
+      _phoneNumbers[i].text = widget.contact['phone_numbers'][i];
     }
     /*===================================================================================================*/
 
@@ -29,7 +59,10 @@ class editContact extends StatelessWidget {
       for (var i = 0; i < _phoneNumbers.length; i++) {
         _phoneNumbers[i].clear();
       }
-    }
+      setState(() {
+        pnIndex = 0;
+      });
+    } 
 
     return Scaffold(
       appBar: AppBar(
@@ -37,76 +70,226 @@ class editContact extends StatelessWidget {
         centerTitle: true,
       ),
       // resizeToAvoidBottomInset: false,
-      body: Center(
+      body: Form(
+        key: _formKey,
         child: ListView(
+          // physics: NeverScrollableScrollPhysics(),
           children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+              SingleChildScrollView(
+                child: Padding(
+                padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: CircleAvatar(
-                      radius: 40,
-                      child: Icon(Icons.person_add,
-                        size: 48,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: CircleAvatar(
+                        radius: 40,
+                        child: Icon(Icons.person_add,
+                          size: 48,
+                        ),
                       ),
                     ),
-                  ),
-                  Divider(height: 20, color: Colors.blueGrey[900],),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _firstname,
-                    decoration: InputDecoration(hintText: 'Enter a first name', labelText: 'First Name'),
-                  ),
-                  TextField(
-                    controller: _lastname,
-                    decoration: InputDecoration(hintText: 'Enter a last name', labelText: 'Last Name'),
-                  ),
-                  SizedBox(height: 25,),
-                  Container(
-                    height: 240,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: contact['phone_numbers'].length,
-                      itemBuilder: (BuildContext context, int index){
-                        return TextField(
-                          controller: _phoneNumbers[index],
-                          decoration: InputDecoration(hintText: 'Enter a Number', labelText: 'Phone Number #${index+1}'),
-                          keyboardType: TextInputType.number,
-                        );
+                    SizedBox(height: 10),
+                    //NAME TEXTFIELDS
+                    TextFormField(
+                      controller: _firstname,
+                      decoration: InputDecoration(
+                        hintText: 'Enter a first name',
+                        labelText: 'First Name',
+                        helperText: ' ',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "First Name shouldn't be Empty";
+                        } return null;
                       },
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      TextButton(
-                        onPressed: clearTextFields, 
-                        child: Text('Clear All',
-                          style: TextStyle(
-                            color: Colors.red,
+                    TextFormField(
+                      controller: _lastname,
+                      decoration: InputDecoration(
+                        hintText: 'Enter a last name',
+                        labelText: 'Last Name',
+                        helperText: ' ',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Last Name shouldn't be Empty";
+                        } return null;
+                      },
+                    ),
+                    SizedBox(height: 2),
+                    //NUMBER TEXTFIELDS
+                    Container(
+                      height: 243,
+                      child: Column(
+                        children: [
+                        //#1
+                        if (pnIndex == 1 || pnIndex == 2 || pnIndex == 3)
+                          Container(
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: _phoneNumbers[0],
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.call),
+                                    hintText: 'Enter a Number',
+                                    labelText: 'Phone Number #1',
+                                    helperText: ' '
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Phone Number shouldn't be empty";
+                                    } return null;
+                                  },
+                                ),
+                                if (pnIndex == 1)
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        pnIndex--;
+                                      });
+                                      _phoneNumbers[0].clear();
+                                    },
+                                    icon: Icon(
+                                      Icons.clear,
+                                      color: Colors.red,
+                                    ),
+                                    splashRadius: 12,
+                                  )
+                              ],
+                              
+                            ),
+                          ),
+                        //#2
+                        if (pnIndex == 2 || pnIndex == 3)
+                          Container(
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: _phoneNumbers[1],
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.call),
+                                    hintText: 'Enter a Number',
+                                    labelText: 'Phone Number #2',
+                                    helperText: ' ',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Phone Number shouldn't be empty";
+                                    } return null;
+                                  },
+                                ),
+                                if (pnIndex == 2)
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        pnIndex--;
+                                      });
+                                      _phoneNumbers[1].clear();
+                                    },
+                                    icon: Icon(
+                                      Icons.clear,
+                                      color: Colors.red,
+                                    ),
+                                    splashRadius: 12,
+                                  )
+                              ],
+                            ),
+                          ),
+                        //#3
+                        if (pnIndex == 3)
+                          Container(
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: _phoneNumbers[2],
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.call),
+                                    hintText: 'Enter a Number',
+                                    labelText: 'Phone Number #3',
+                                    helperText: ' '
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Phone Number shouldn't be empty";
+                                    } return null;
+                                  },
+                                ),
+                                if (pnIndex == 3)
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        pnIndex--;
+                                      });
+                                      _phoneNumbers[2].clear();
+                                    },
+                                    icon: Icon(
+                                      Icons.clear,
+                                      color: Colors.red,
+                                    ),
+                                    splashRadius: 12,
+                                  )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        TextButton(
+                          onPressed: clearTextFields, 
+                          child: Text('Clear All',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
                           ),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text('+ Add Number'),
-                      ),
-                      TextButton(
-                        onPressed: () {}, 
-                        child: Text('Save Changes',
-                          style: TextStyle(
-                            color: Colors.green,
-                          ),
+                        TextButton(
+                          onPressed: addNumber,
+                          child: Text('+ Add Number'),
                         ),
-                      )
-                    ],
-                  ),
-                ],
-            ),
+                        TextButton(
+                          onPressed: () {
+                            final List<String> pnums = [];
+                            for (var i = 0; i < 3; i++) {
+                              pnums.add(_phoneNumbers[i].text);
+                            }
+                            print('Added $pnums');
+
+                            if (_formKey.currentState!.validate()) {
+                              addedSnackBar();
+                              
+                              final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
+                              api.createContact(data);
+                              clearTextFields();
+                              Navigator.pop(context);
+                            }
+                          }, 
+                          child: Text('Add Contact',
+                            style: TextStyle(
+                                color: Colors.green,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-          ], 
+            ),
+          ],
         ),
       ),
     );
