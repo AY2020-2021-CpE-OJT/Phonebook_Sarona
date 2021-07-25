@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:phonebook/api/api.dart';
-import 'package:phonebook/routes/test.dart';
 
 class addNew extends StatefulWidget {
   const addNew({ Key? key}) : super(key: key);
@@ -10,6 +9,13 @@ class addNew extends StatefulWidget {
 }
 
 class _addNewState extends State<addNew> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstname = TextEditingController();
+  final TextEditingController _lastname = TextEditingController();
+  final List<TextEditingController> _phoneNumbers = [
+    for (var i = 0; i < 3; i++) 
+      TextEditingController()
+  ];
   int pnIndex = 0;
   contactAPI api = contactAPI();
 
@@ -17,17 +23,16 @@ class _addNewState extends State<addNew> {
       return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added Contact..')));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController _firstname = TextEditingController();
-    final TextEditingController _lastname = TextEditingController();
-    final List<TextEditingController> _phoneNumbers = [
-      for (var i = 0; i < 3; i++) 
-        TextEditingController()
-    ];
+  addNumber () {
+      if (pnIndex >= 3) {
+        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cannot add more Phone Numbers')));
+      }
+      setState(() {
+        pnIndex++;
+      });
+  }
 
-    clearTextInput() {
+  clearTextInput() {
       _firstname.clear();
       _lastname.clear();
       for (var i = 0; i < _phoneNumbers.length; i++) {
@@ -36,17 +41,10 @@ class _addNewState extends State<addNew> {
       setState(() {
         pnIndex = 0;
       });
-    }
+  } 
 
-    addNumber () {
-      if (pnIndex >= 3) {
-        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cannot add more Phone Numbers')));
-      }
-      setState(() {
-        pnIndex++;
-      });
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Adding Contact'),
@@ -106,6 +104,7 @@ class _addNewState extends State<addNew> {
                       height: 243,
                       child: Column(
                         children: [
+                        //#1
                         if (pnIndex == 1 || pnIndex == 2 || pnIndex == 3)
                           Container(
                             child: Stack(
@@ -120,6 +119,11 @@ class _addNewState extends State<addNew> {
                                     labelText: 'Phone Number #1',
                                     helperText: ' '
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Phone Number shouldn't be empty";
+                                    } return null;
+                                  },
                                 ),
                                 if (pnIndex == 1)
                                   IconButton(
@@ -139,6 +143,7 @@ class _addNewState extends State<addNew> {
                               
                             ),
                           ),
+                        //#2
                         if (pnIndex == 2 || pnIndex == 3)
                           Container(
                             child: Stack(
@@ -153,6 +158,11 @@ class _addNewState extends State<addNew> {
                                     labelText: 'Phone Number #2',
                                     helperText: ' ',
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Phone Number shouldn't be empty";
+                                    } return null;
+                                  },
                                 ),
                                 if (pnIndex == 2)
                                   IconButton(
@@ -171,6 +181,7 @@ class _addNewState extends State<addNew> {
                               ],
                             ),
                           ),
+                        //#3
                         if (pnIndex == 3)
                           Container(
                             child: Stack(
@@ -185,6 +196,11 @@ class _addNewState extends State<addNew> {
                                     labelText: 'Phone Number #3',
                                     helperText: ' '
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Phone Number shouldn't be empty";
+                                    } return null;
+                                  },
                                 ),
                                 if (pnIndex == 3)
                                   IconButton(
@@ -226,9 +242,16 @@ class _addNewState extends State<addNew> {
                         ),
                         TextButton(
                           onPressed: () {
+                            final List<String> pnums = [];
+                            for (var i = 0; i < 3; i++) {
+                              pnums.add(_phoneNumbers[i].text);
+                            }
+                            print('Added $pnums');
+
                             if (_formKey.currentState!.validate()) {
                               addedSnackBar();
-                              final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text);
+                              
+                              final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
                               api.createContact(data);
                               clearTextInput();
                               Navigator.pop(context);
