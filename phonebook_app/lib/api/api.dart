@@ -29,17 +29,14 @@ class contactAPI {
     }
   }
 
-  Future<contactInfo> createContact(String fsName, lsName) async {
-    // final Map data;
+  Future<contactInfo> createContact(contactInfo item) async {
+
     http.Response response = await http.post(Uri.parse(uri),
       headers: _header,
-      body: jsonEncode(<String, String> {
-        'first_name': fsName,
-        'last_name': lsName
-      })
+      body: jsonEncode(item.toJson()),
     );
-    print(response.statusCode);
 
+    print(response.statusCode);
     if (response.statusCode == 200) {
       return await contactInfo.fromJson(jsonDecode(response.body));
     } else {
@@ -51,20 +48,29 @@ class contactAPI {
 class contactInfo {
   String fsName;
   String lsName;
-  // List<String> phNumbers;
+  List<String> phNumbers;
 
   contactInfo({
     required this.fsName,
     required this.lsName,
-    // required this.phNumbers
+    required this.phNumbers
   });
 
   factory contactInfo.fromJson(Map<String, dynamic> json) {
+    final numbersList = json['phone_numbers'] as List<dynamic>;
     return contactInfo(
       fsName: json['first_name'],
       lsName: json['last_name'],
-      // phNumbers: json['phone_numbers'],
+      phNumbers: numbersList.map((e) => e.toString()).toList()
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'first_name': this.fsName,
+      'last_name': this.lsName,
+      'phone_numbers': this.phNumbers,
+    };
   }
 }
 
