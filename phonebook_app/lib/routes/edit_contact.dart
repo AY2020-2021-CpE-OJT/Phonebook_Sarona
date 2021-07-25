@@ -12,48 +12,46 @@ class editContact extends StatefulWidget {
 class _editContactState extends State<editContact> {
   final _formKey = GlobalKey<FormState>();
   contactAPI api = contactAPI();
-  int pnIndex = 2;
+  final List<String> pnums = [];
+  int pnIndex = 3;
+  
+  final TextEditingController _firstname = TextEditingController();
+  final TextEditingController _lastname = TextEditingController();
+  final List<TextEditingController> _phoneNumbers = [
+    for (var i = 0; i < 3; i++) 
+      TextEditingController()
+  ];
 
   @override
   void initState() {
     super.initState();
-    for (var i = 0; i < pnIndex; i++) {
+    for (var i = 0; i < 3; i++) {
       if (widget.contact['phone_numbers'][i] == '') {
         pnIndex--;
       }
+      print(pnIndex);
     }
-  }
-
-  addedSnackBar() {
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved new changes')));
-  }
-
-  addNumber () {
-      if (pnIndex >= 3) {
-        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cannot add more Phone Numbers')));
-      }
-      setState(() {
-        pnIndex++;
-      });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final TextEditingController _firstname = TextEditingController();
-    final TextEditingController _lastname = TextEditingController();
-    final List<TextEditingController> _phoneNumbers = [
-      for (var i = 0; i < widget.contact['phone_numbers'].length; i++) 
-        TextEditingController()
-    ];
-    /*===================================================================================================*/
     _firstname.text = widget.contact['first_name'];
     _lastname.text = widget.contact['last_name'];
     for (var i = 0; i < widget.contact['phone_numbers'].length; i++) {
       _phoneNumbers[i].text = widget.contact['phone_numbers'][i];
     }
-    /*===================================================================================================*/
+  }
 
-    clearTextFields() {
+  addedSnackBar() {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved new changes')));
+  }
+
+  addNumber () {
+    if (pnIndex >= 3) {
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cannot add more Phone Numbers')));
+    }
+    setState(() {
+      pnIndex++;
+    });
+  }
+
+  clearTextFields() {
       _firstname.clear();
       _lastname.clear();
       for (var i = 0; i < _phoneNumbers.length; i++) {
@@ -64,6 +62,8 @@ class _editContactState extends State<editContact> {
       });
     } 
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Editing Contact'),
@@ -227,6 +227,7 @@ class _editContactState extends State<editContact> {
                                         pnIndex--;
                                       });
                                       _phoneNumbers[2].clear();
+
                                     },
                                     icon: Icon(
                                       Icons.clear,
@@ -260,7 +261,6 @@ class _editContactState extends State<editContact> {
                         ),
                         TextButton(
                           onPressed: () {
-                            final List<String> pnums = [];
                             for (var i = 0; i < 3; i++) {
                               pnums.add(_phoneNumbers[i].text);
                             }
@@ -268,7 +268,6 @@ class _editContactState extends State<editContact> {
 
                             if (_formKey.currentState!.validate()) {
                               addedSnackBar();
-                              
                               final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
                               api.updateContact(data, widget.contact['_id']);
                               clearTextFields();
