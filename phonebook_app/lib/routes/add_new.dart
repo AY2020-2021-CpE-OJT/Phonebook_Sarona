@@ -10,19 +10,8 @@ class addNew extends StatefulWidget {
 }
 
 class _addNewState extends State<addNew> {
-  // List<DynamicWidget> phoneNumbers = [];
   int pnIndex = 0;
   contactAPI api = contactAPI();
-
-  // addDynamic() {
-  //   if (phoneNumbers.length >= 3) {
-  //     return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cannot add more Phone Numbers')));
-  //   }
-  //   phoneNumbers.add(DynamicWidget(index: pnIndex));
-  //   setState(() {
-  //     pnIndex++;
-  //   });
-  // }
 
   addedSnackBar() {
       return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added Contact..')));
@@ -263,26 +252,3 @@ class _addNewState extends State<addNew> {
     );
   }
 }
-
-// class DynamicWidget extends StatelessWidget {
-//   final _formKey = GlobalKey<FormState>();
-//   final int index;
-//   final controller = TextEditingController();
-//   DynamicWidget({required this.index});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Form(
-//       key: _formKey,
-//       child: new TextFormField(
-//         controller: controller,
-//         decoration: new InputDecoration(
-//           hintText: 'Enter a Number',
-//           labelText: 'Phone Number #${index+1}',
-//           helperText: ' '
-//         ),
-//         keyboardType: TextInputType.number,
-//       ),
-//     );
-//   }
-// }
