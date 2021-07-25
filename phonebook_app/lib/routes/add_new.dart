@@ -53,7 +53,6 @@ class _addNewState extends State<addNew> {
       body: Form(
         key: _formKey,
         child: ListView(
-          // physics: NeverScrollableScrollPhysics(),
           children: [
               SingleChildScrollView(
                 child: Padding(
