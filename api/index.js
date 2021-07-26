@@ -1,16 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const User_Infos = require('../models/schema');
 const authRoute = require('./auth');
 require("dotenv/config");
 const app = express();
-// app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
+app.use(express.json());
 
 //Use auth
-app.use('/', authRoute);
-app.use(express.json());
+app.use('/user', authRoute);
 
 //GET ALL
 app.get('/', async (req, res) => {
