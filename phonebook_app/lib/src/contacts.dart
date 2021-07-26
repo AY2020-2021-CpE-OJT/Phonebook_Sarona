@@ -42,7 +42,7 @@ class contactsScreen_State extends State<contactsScreen> {
       loading = true;
       loadData();
     });
-    await Future.delayed(Duration(milliseconds: 2500));
+    await Future.delayed(Duration(milliseconds: 3000));
     setState(() {
       loading = false;
     });   
