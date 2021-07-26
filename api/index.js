@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const User_Infos = require('../models/schema');
 const authRoute = require('./auth');
+const verify = require('./verifyToken');
 require("dotenv/config");
 const app = express();
 app.use(express.json());
@@ -10,7 +11,7 @@ app.use(express.json());
 app.use('/user', authRoute);
 
 //GET ALL
-app.get('/', async (req, res) => {
+app.get('/', verify, async (req, res) => {
     try {
         const fetchedInfo = await User_Infos.find();
         res.json({fetchedInfo});
