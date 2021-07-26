@@ -10,9 +10,9 @@ class contactAPI {
     http.Response response = await http.get(Uri.parse(uri));
     data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      return await data['fetchedInfo'];
+      return  data['fetchedInfo'];
     } else {
-      throw await Exception('Failed to load data');
+      throw Exception('Failed to load data');
     }
   }
 
@@ -23,14 +23,13 @@ class contactAPI {
     );
     data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      return await data['fetchedInfo'];
+      return data['fetchedInfo'];
     } else {
-      throw await Exception('Failed to delete data');
+      throw Exception('Failed to delete data');
     }
   }
 
   Future<contactInfo> createContact(contactInfo item) async {
-
     http.Response response = await http.post(Uri.parse(uri),
       headers: _header,
       body: jsonEncode(item.toJson()),
@@ -38,9 +37,9 @@ class contactAPI {
 
     print(response.statusCode);
     if (response.statusCode == 200) {
-      return await contactInfo.fromJson(jsonDecode(response.body));
+      return contactInfo.fromJson(jsonDecode(response.body));
     } else {
-      throw await Exception('Failed to add data');
+      throw  Exception('Failed to add data');
     }
   }
 
@@ -53,9 +52,9 @@ class contactAPI {
 
     print(response.statusCode);
     if (response.statusCode == 200) {
-      return await contactInfo.fromJson(jsonDecode(response.body));
+      return  contactInfo.fromJson(jsonDecode(response.body));
     } else {
-      throw await Exception('Failed to save data');
+      throw  Exception('Failed to save data');
     }
   }
 }
