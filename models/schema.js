@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-//userinfo Scheme
 
 const infoSchema = mongoose.Schema({
     last_name: {

@@ -1,18 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const User_Infos = require('./schema');
+const User_Infos = require('../models/schema');
+const authRoute = require('./auth');
 require("dotenv/config");
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+//Use auth
+app.use('/', authRoute);
 
 //GET ALL
 app.get('/', async (req, res) => {
     try {
         const fetchedInfo = await User_Infos.find();
         res.json({fetchedInfo});
-    }catch {
+    }catch(err) {
         res.json({message: err})
     }
 });
