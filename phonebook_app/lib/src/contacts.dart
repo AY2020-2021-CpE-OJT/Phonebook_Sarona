@@ -71,6 +71,47 @@ class contactsScreen_State extends State<contactsScreen> {
       appBar: AppBar(
         title: Text('Phonebook'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25))),
+                  title: new Text('Do you want to logout?', textAlign: TextAlign.center),
+                  actions: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        TextButton(
+                            onPressed: () {
+                              Navigator.restorablePushNamedAndRemoveUntil(context, '/', (route) => false);
+                            },
+                            child: Text('Logout',
+                              style: TextStyle(color: Colors.red,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {Navigator.of(context).pop();},
+                          child: Text('Cancel',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                );
+              }
+            ),
+            splashRadius: 18,
+            icon: Icon(Icons.logout)
+          ),
+              
+        ],
       ),
       body: showData(),
       floatingActionButton: Row(
