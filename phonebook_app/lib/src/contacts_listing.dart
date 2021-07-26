@@ -5,9 +5,7 @@ import 'no_contacts.dart';
 class contactsListing extends StatelessWidget {
   final List contacts;
   final Function(String id) toDelete;
-
-  
-  contactsListing({required this.contacts,  required this.toDelete});
+  contactsListing({Key? key, required this.contacts,  required this.toDelete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -249,7 +249,6 @@ class _addNewState extends State<addNew> {
 
                             if (_formKey.currentState!.validate()) {
                               addedSnackBar();
-                              
                               final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
                               api.createContact(data);
                               clearTextFields();
