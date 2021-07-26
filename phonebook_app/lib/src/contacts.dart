@@ -4,8 +4,7 @@ import 'contacts_listing.dart';
 import 'package:phonebook/api/api.dart';
 
 class contactsScreen extends StatefulWidget {
-  contactsScreen({Key? key, required this.title}) : super(key: key);
-  final String title;
+  contactsScreen({Key? key,}) : super(key: key);
 
   @override
   contactsScreen_State createState() => contactsScreen_State();
@@ -22,15 +21,31 @@ class contactsScreen_State extends State<contactsScreen> {
     loadData();
   }
   
-  loadData() {
-    api.getContacts().then((data) {
-      setState(() {
-        contacts = data;
-        if (contacts.isNotEmpty) {
-          loading = false;
-        }
+  loadData() async {
+    try {
+      await api.getContacts().then((data) {
+        setState(() {
+          contacts = data;
+          if (contacts.isNotEmpty) {
+            loading = false;
+          }
+        });
       });
+    } on Exception catch (e) {
+      print(e);
+    }
+
+  }
+
+  Future<void> refreshData() async {
+    setState(() {
+      loading = true;
+      loadData();
     });
+    await Future.delayed(Duration(milliseconds: 2500));
+    setState(() {
+      loading = false;
+    });   
   }
 
   deleteContact(String id) {
@@ -54,21 +69,16 @@ class contactsScreen_State extends State<contactsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Phonebook'),
         centerTitle: true,
       ),
       body: showData(),
-      // loading ? Center(child: CircularProgressIndicator()) :
-      // contactsListing(contacts: contacts, toDelete: deleteContact),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
             onPressed: () {
-              setState(() {
-                loading = true;
-              });
-              loadData();
+              refreshData();
             },
             heroTag: 'refreshbtn',
             backgroundColor: Colors.pink[400],
@@ -81,10 +91,7 @@ class contactsScreen_State extends State<contactsScreen> {
               Navigator.push(context,
                 MaterialPageRoute(builder: (context) => addNew())
               ).then((value) {
-                setState(() {
-                  loading = true;
-                });
-                loadData();
+                refreshData();
               });
             },
             heroTag: 'addbtn',
@@ -97,4 +104,3 @@ class contactsScreen_State extends State<contactsScreen> {
     );
   }
 }
-
