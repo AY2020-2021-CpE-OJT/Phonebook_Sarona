@@ -252,7 +252,7 @@ class _addNewState extends State<addNew> {
                               final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
                               api.createContact(data);
                               clearTextFields();
-                              Navigator.restorablePushNamedAndRemoveUntil(context, '/contact', (route) => false);
+                              Navigator.pop(context);
                             }
                           }, 
                           child: Text('Add Contact',
