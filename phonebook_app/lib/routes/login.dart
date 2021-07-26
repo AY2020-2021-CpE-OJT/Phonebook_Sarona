@@ -62,7 +62,7 @@ class LoginScreen extends StatelessWidget {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         if (_username.text == 'admin' && _password.text == '123') {
-                          Navigator.pushNamed(context, '/contact');
+                          Navigator.pushNamedAndRemoveUntil(context, '/contact', (route) => false);
                         }
                       }
                     },

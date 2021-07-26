@@ -271,7 +271,7 @@ class _editContactState extends State<editContact> {
                               final data = contactInfo(fsName: _firstname.text, lsName: _lastname.text, phNumbers: pnums);
                               api.updateContact(data, widget.contact['_id']);
                               clearTextFields();
-                              Navigator.restorablePushNamedAndRemoveUntil(context, '/', (route) => false);
+                              Navigator.restorablePushNamedAndRemoveUntil(context, '/contact', (route) => false);
                             }
                           }, 
                           child: Text('Save Changes',
