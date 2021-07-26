@@ -5,11 +5,12 @@ const User_Infos = require('../models/schema');
 const authRoute = require('./auth');
 require("dotenv/config");
 const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
 
 //Use auth
 app.use('/', authRoute);
+app.use(express.json());
 
 //GET ALL
 app.get('/', async (req, res) => {
