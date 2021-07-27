@@ -11,7 +11,7 @@ app.use(express.json());
 app.use('/user', authRoute);
 
 //GET ALL
-app.get('/', verify, async (req, res) => {
+app.get('/', async (req, res) => {
     try {
         const fetchedInfo = await User_Infos.find();
         res.json({fetchedInfo});
