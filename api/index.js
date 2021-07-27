@@ -11,7 +11,7 @@ app.use(express.json());
 app.use('/user', authRoute);
 
 //GET ALL
-app.get('/', async (req, res) => {
+app.get('/', verify, async (req, res) => {
     try {
         const fetchedInfo = await User_Infos.find();
         res.json({fetchedInfo});
@@ -21,7 +21,7 @@ app.get('/', async (req, res) => {
 });
 
 //GET BY ID
-app.get('/:id', async (req, res) => {
+app.get('/:id', verify, async (req, res) => {
     try {
         User_Infos.findById({_id: req.params.id}).then(function(fetchedInfo){
             res.json({fetchedInfo});
@@ -33,7 +33,7 @@ app.get('/:id', async (req, res) => {
 });
 
 //SAVE DATA TO DB
-app.post('/', async (req,res) => {
+app.post('/', verify, async (req,res) => {
     const postInfo = new User_Infos({               //Uses the model and at the same time get info
         last_name: req.body.last_name,
         first_name: req.body.first_name,
@@ -48,7 +48,7 @@ app.post('/', async (req,res) => {
 });
 
 //DELETE DATA FROM DB
-app.delete('/:id', async (req,res) => {
+app.delete('/:id', verify, async (req,res) => {
     try {
         User_Infos.findByIdAndDelete({_id: req.params.id}).then(function(deletedInfo){
             res.json(deletedInfo);
@@ -59,7 +59,7 @@ app.delete('/:id', async (req,res) => {
 }),
 
 //UPDATE DATA FROM DB
-app.put('/:id', function(req, res, next){
+app.put('/:id', verify, function(req, res, next){
     User_Infos.findByIdAndUpdate({_id: req.params.id}, req.body).then(function(){
         User_Infos.findOne({_id: req.params.id}).then(function(updatedInfo){
             res.send(updatedInfo);
